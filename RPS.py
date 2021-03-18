@@ -2,15 +2,20 @@
 import random
 
 guessed = []
+counter = 0
 
 
 def player(prev_play, opponent_history=[]):
     global guessed
+    global counter
+    if len(guessed) > 0 and len(guessed) % 1000 == 0:
+        counter += 1
+
     third = 1 / 3
     opponent_history.append(prev_play)
 
     markov_df = {}
-    # NEXT BOT OUTPUT   R   ,   P  ,   S
+    # OUR NEXT MOVE      R   ,   P  ,   S
     markov_df["PR"] = [third, third, third]
     markov_df["PP"] = [third, third, third]
     markov_df["PS"] = [third, third, third]
@@ -21,15 +26,18 @@ def player(prev_play, opponent_history=[]):
     markov_df["SP"] = [third, third, third]
     markov_df["SS"] = [third, third, third]
 
-    if len(guessed) <= 4:
+    new_guessed = guessed[counter * 1000 :]
+    new_opponent = opponent_history[counter * 1000 :]
+
+    if len(new_guessed) <= 3:
         guess = random.choice(["R", "P", "S"])
         guessed.append(guess)
-    elif len(opponent_history) >= 3:
-        for i in range(len(opponent_history) - 1):
-            key = guessed[i] + opponent_history[i]
+    elif len(new_guessed) > 3:
+        for i in range(len(new_guessed) - 1):
+            key = new_guessed[i] + new_opponent[i]
             if len(key) < 2:
-                key = guessed[i] * 2
-            next_move = opponent_history[i + 1]
+                key = new_guessed[i] * 2
+            next_move = new_opponent[i + 1]
             if next_move == "R":
                 markov_df[key][1] += third
                 markov_df[key][0] -= third
@@ -43,9 +51,9 @@ def player(prev_play, opponent_history=[]):
                 markov_df[key][1] -= third
                 markov_df[key][2] -= third
 
-        last_key = guessed[-2] + opponent_history[-1]
+        last_key = new_guessed[-1] + new_opponent[-1]
         if len(last_key) < 2:
-            last_key = guessed[-2] * 2
+            last_key = new_guessed[-1] * 2
         probR = markov_df[last_key][0]
         probP = markov_df[last_key][1]
         probS = markov_df[last_key][2]
