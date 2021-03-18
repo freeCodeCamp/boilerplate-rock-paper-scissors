@@ -25,7 +25,6 @@ def player(prev_play, opponent_history=[]):
         guess = random.choice(["R", "P", "S"])
         guessed.append(guess)
     elif len(opponent_history) >= 3:
-        # print(guessed[-1], opponent_history[-2])
         for i in range(len(opponent_history) - 1):
             key = guessed[i] + opponent_history[i]
             if len(key) < 2:
@@ -43,7 +42,6 @@ def player(prev_play, opponent_history=[]):
                 markov_df[key][0] += third
                 markov_df[key][1] -= third
                 markov_df[key][2] -= third
-        # print(markov_df[key])
 
         last_key = guessed[-2] + opponent_history[-1]
         if len(last_key) < 2:
