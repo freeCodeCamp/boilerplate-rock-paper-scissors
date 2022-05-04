@@ -40,7 +40,7 @@ def play(player1, player2, num_games, verbose=False):
         win_rate = results['p1'] / games_won * 100
 
     print("Final results:", results)
-    print(f"Player 1 win rate: {win_rate}%")
+    print("Player 1 win rate: {win_rate}%")
 
     return (win_rate)
 
