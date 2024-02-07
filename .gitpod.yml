@@ -1,4 +1,4 @@
-image: gitpod/workspace-python-3.8
+image: gitpod/workspace-python-3.12
 
 tasks:
   - command: python main.py
